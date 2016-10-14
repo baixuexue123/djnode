@@ -1,0 +1,2 @@
+# djnode
+nodejs django test
