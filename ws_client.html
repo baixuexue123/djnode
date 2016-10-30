@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Client</title>
+</head>
+<body>
+<div id="msg"></div>
+<script>
+    var msg = document.getElementById('msg');
+    var ws = new WebSocket("ws://localhost:8888");
+    ws.onopen = function() {
+       ws.send("Hello, world");
+    };
+    ws.onmessage = function (evt) {
+        var p = document.createElement('p');
+        p.innerText = evt.data;
+        msg.appendChild(p);
+    };
+</script>
+</body>
+</html>
