@@ -1,13 +1,14 @@
 'use strict';
 
-var http = require('http');
-var server = http.createServer().listen(4000);
-var io = require('socket.io').listen(server);
-var cookie_reader = require('cookie');
-var querystring = require('querystring');
+const http = require('http');
+const server = http.createServer().listen(4000);
+const io = require('socket.io').listen(server);
+const cookie_reader = require('cookie');
+const querystring = require('querystring');
 
-var redis = require("redis");
-var sub = redis.createClient();
+const redis = require("redis");
+
+const sub = redis.createClient();
 
 // 订阅chat channel
 sub.subscribe('chat');

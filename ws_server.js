@@ -1,7 +1,7 @@
 'use strict';
 
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 8888 });
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
 
 
 wss.on('connection', function (ws) {
