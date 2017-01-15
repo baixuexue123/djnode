@@ -7,15 +7,23 @@
 <body>
 <div id="msg"></div>
 <script>
-    var msg = document.getElementById('msg');
-    var ws = new WebSocket("ws://localhost:8888");
+    const msg = document.getElementById('msg');
+    const ws = new WebSocket("ws://localhost:8100");
+
     ws.onopen = function() {
-        ws.send("Hello, world");
+        // ws.send(JSON.stringify({a: 1, b: 2}));
+        ws.send("Hello, It's Client");
     };
+
     ws.onmessage = function (evt) {
         var p = document.createElement('p');
         p.innerText = evt.data;
         msg.appendChild(p);
+    };
+
+    ws.onclose = function (e) {
+        console.log(e);
+        ws.send('Bye!');
     };
 </script>
 </body>

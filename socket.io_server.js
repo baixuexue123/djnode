@@ -1,8 +1,8 @@
 'use strict';
 
-var http = require('http');
-var server = http.createServer();
-var io = require('socket.io')(server);
+const http = require('http');
+const server = http.createServer();
+const io = require('socket.io')(server);
 
 
 io.on('connection', function (socket) {

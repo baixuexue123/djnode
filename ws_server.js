@@ -1,19 +1,26 @@
 'use strict';
 
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 8888 });
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8100 });
 
 
 wss.on('connection', function (ws) {
 
+    console.log(wss.clients);
+
     console.log(typeof ws);
 
     ws.on('message', function (message) {
-        var msg = JSON.$.parse(message);
-        console.log('received: %s', message);
+        try {
+            var msg = JSON.parse(message);
+        }
+        catch (e) {
+            console.log(e);
+        }
+        console.log('Received: %s', message);
     });
 
-    ws.send('something');
+    ws.send("Hello, It's Server");
 
     ws.on('close', function (code, message) {
         console.log(code);
