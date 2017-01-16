@@ -7,7 +7,6 @@ const cookie_reader = require('cookie');
 const querystring = require('querystring');
 
 const redis = require("redis");
-
 const sub = redis.createClient();
 
 // 订阅chat channel
