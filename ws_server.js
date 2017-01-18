@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 
 const redis = require("redis");
-const sub = redis.createClient();
+const sub = redis.createClient({host: "127.0.0.1", port: 6379, db: 0});
 
 // 订阅chat channel
 sub.subscribe('push');
@@ -13,7 +13,7 @@ sub.subscribe('push');
 wss.on('connection', function (ws) {
 
     // 把信息从Redis发送到客户端
-    sub.on('message', function(channel, message){
+    sub.on('message', function (channel, message) {
         ws.send(message);
     });
 

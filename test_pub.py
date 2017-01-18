@@ -11,6 +11,8 @@ p = r.pubsub()
 def my_handler(message):
     print 'MY HANDLER: ', message['data']
 
-p.subscribe(**{'my-channel': my_handler})
+# p.subscribe(**{'my-channel': my_handler})
 
 r.publish('push', 'awesome data')
+
+# r.publish('push', 'quit')
