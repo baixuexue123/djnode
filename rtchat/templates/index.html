@@ -31,12 +31,12 @@
                 if(event.keyCode != 13) return;
                 var msg = entry_el.attr('value');
                 if(msg){
-                socket.emit('send_message', msg, function(data){
-                    console.log(data);
-                });
+                    socket.emit('send_message', msg, function(data){
+                        console.log(data);
+                    });
 
-                //Clear input value
-                entry_el.attr('value', '');
+                    //Clear input value
+                    entry_el.attr('value', '');
                 }
             });
         });
