@@ -10,6 +10,11 @@
     const msg = document.getElementById('msg');
     const ws = new WebSocket("ws://localhost:8080");
 
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
     ws.onopen = function() {
         // ws.send(JSON.stringify({a: 1, b: 2}));
         ws.send("Hello, It's Client");
