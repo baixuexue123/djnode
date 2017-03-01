@@ -1,43 +1,65 @@
 'use strict';
 
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
-
+const wss = new WebSocket.Server({ port: 8200 });
 const redis = require("redis");
 const sub = redis.createClient({host: "127.0.0.1", port: 6379, db: 0});
+const log4js = require('log4js');
 
-// 订阅chat channel
+log4js.configure({
+    appenders: [
+        { type: 'console' },
+        { type: 'file', filename: 'logs/marmot.log', category: 'marmot' }
+    ]
+});
+
+const logger = log4js.getLogger('marmot');
+logger.setLevel('DEBUG');
+
+// 订阅push channel
 sub.subscribe('push');
 
 
 wss.on('connection', function (ws) {
 
-    // 把信息从Redis发送到客户端
-    sub.on('message', function (channel, message) {
-        ws.send(message);
-    });
+    var sessionid = undefined;
+    var origin = ws.upgradeReq.headers.origin;
 
-    console.log(typeof ws);
+    logger.info(origin + " is connected!");
+
+    ws.send(JSON.stringify({content: "*********Marmot WebSocketServer************"}));
+
+    // 处理Redis订阅消息
+    sub.on('message', function (channel, message) {
+        try {
+            var msg = JSON.parse(message);
+            if (msg.sessionid === sessionid) {
+                // 发送消息到客户端
+                ws.send(JSON.stringify({content: msg.content}), function (err) {
+                    if (typeof err !== "undefined") {
+                        logger.log(err);
+                    } else {
+                        logger.info("Redis published: " + message);
+                    }
+                });
+            }
+        } catch (e) {
+            logger.error(e);
+        }
+    });
 
     ws.on('message', function (message) {
         try {
             var msg = JSON.parse(message);
+            sessionid = msg.sessionid;
+            logger.debug("Received sessionid: " + sessionid);
+        } catch (e) {
+            logger.error(e);
         }
-        catch (e) {
-            // console.log(e);
-        }
-        console.log('Received: %s', message);
     });
-
-    ws.send("Hello, It's Server");
 
     ws.on('close', function (code, message) {
-        console.log(code);
-        console.log(message);
-        console.log('close');
+        logger.info(origin + ' is gone!');
     });
 
-    console.log(wss.clients.length);
-
-    console.log(wss.clients);
 });

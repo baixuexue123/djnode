@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import redis
 
 
@@ -13,6 +14,6 @@ def my_handler(message):
 
 # p.subscribe(**{'my-channel': my_handler})
 
-r.publish('push', 'awesome data')
+r.publish('push', json.dumps({'sessionid': '456', 'content': 'It is Marmot'}))
 
 # r.publish('push', 'quit')
